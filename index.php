@@ -5,15 +5,13 @@ $conn = getDBConnection();
 
 // Sekme seçimi (aktif veya arşivlenmiş notlar)
 $arsiv_goster = isset($_GET['arsiv']) && $_GET['arsiv'] == '1';
+$arsivlendi = $arsiv_goster ? 1 : 0;
 
-// Notları getir
-if ($arsiv_goster) {
-    $sql = "SELECT * FROM notlar WHERE arsivlendi = 1 ORDER BY guncelleme_tarihi DESC";
-} else {
-    $sql = "SELECT * FROM notlar WHERE arsivlendi = 0 ORDER BY guncelleme_tarihi DESC";
-}
-
-$result = $conn->query($sql);
+// Notları getir (prepared statement ile)
+$stmt = $conn->prepare("SELECT * FROM notlar WHERE arsivlendi = ? ORDER BY guncelleme_tarihi DESC");
+$stmt->bind_param("i", $arsivlendi);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -102,5 +100,6 @@ $result = $conn->query($sql);
 </html>
 
 <?php
+$stmt->close();
 $conn->close();
 ?>
