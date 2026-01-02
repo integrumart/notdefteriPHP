@@ -1,0 +1,19 @@
+# IDE ve editör dosyaları
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Geçici dosyalar
+*.tmp
+*.bak
+*.log
+
+# PHP
+vendor/
+composer.lock
+
+# Yerel yapılandırma (varsa)
+config.local.php
